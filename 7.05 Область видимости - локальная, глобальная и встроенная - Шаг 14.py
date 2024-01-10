@@ -28,7 +28,7 @@ get_word_indices(['Avada Kedavra',
 
 
 def get_word_indices(strings: list[str]) -> dict:
-    """Выводит уникальные слова в тексте со списком номеров строк, в которых эти слова встречаются"""
+    """Выводит уникальные слова в тексте и список номеров строк, в которых эти слова встречаются"""
     result = {}
     for idx, phrase in enumerate(strings):
         for word in phrase.lower().split():

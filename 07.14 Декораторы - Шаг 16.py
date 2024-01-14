@@ -80,6 +80,8 @@ assert fibonacci(70) == 190392490709135
 assert fibonacci(80) == 23416728348467685
 assert fibonacci(90) == 2880067194370816120
 assert fibonacci(100) == 354224848179261915075
+assert (fibonacci(500) ==
+        139423224561697880139724382870407283950070256587697307264108962948325571622863290691557658876222521294125)
 assert fibonacci.__name__ == 'fibonacci'
 assert fibonacci.__doc__.strip() == 'Возвращает n-ое число Фибоначчи'
 print('Good')

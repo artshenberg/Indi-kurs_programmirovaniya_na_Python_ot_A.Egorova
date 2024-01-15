@@ -10,7 +10,7 @@
 import json
 
 
-def analyze_it(file_name: str) -> tuple | str:
+def analyze_it(file_name: str) -> str:
     """
     Находит самого успешного менеджера по итоговой сумме продаж.
     Выводит его имя, затем фамилию и после общую сумму его продаж.
@@ -29,14 +29,20 @@ def analyze_it(file_name: str) -> tuple | str:
 
     summary = {}
     for item in json_data:
-        summary[(item['manager']['first_name'], item['manager']['last_name'])] = (
-            summary.get((item['manager']['first_name'], item['manager']['last_name']), 0) +
-            sum(car['price'] for car in item['cars'])
-        )
+        manager = item.get('manager', {})  # Получить словарь с данными текущего менеджера
+        cars = item.get('cars', [])  # Получить словарь с данными о продажах текущего менеджера
 
-    result = sorted(summary.items(), key=lambda x: (x[1], x[0][1], x[0][0])).pop()
+        # Получить имя и фамилию менеджера (уменьшит количество обращений к словарю json_data['item'])
+        manager_name = f"{manager.get('first_name')} {manager.get('last_name')}"
 
-    return f'{result[0][0]} {result[0][1]} {result[1]}'
+        summary[manager_name] = (summary.get(manager_name, 0) + sum(car.get('price', 0) for car in cars))
+
+    if not summary:
+        return f'Файл "{file_name}" не содержит данных о продажах'
+
+    result = sorted(summary.items(), key=lambda x: (x[1], x[0].split()[0], x[0].split()[1])).pop()
+
+    return f'{result[0]} {result[1]}'
 
 
 print(analyze_it('manager_sales.json'))
